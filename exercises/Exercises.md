@@ -19,7 +19,7 @@ Today is sunny
 12345
 You are funny
 
-##### add your solution here
+$ ruby -ne 'print if /is/' ip.txt
 This game is good
 Today is sunny
 ```
@@ -27,7 +27,7 @@ Today is sunny
 **b)** For the input file `ip.txt`, display first field of lines *not* containing `y`. Consider space as the field separator for this file.
 
 ```bash
-##### add your solution here
+$ ruby -ane 'puts $F[0] if !/y/' ip.txt
 Hello
 This
 12345
@@ -36,7 +36,7 @@ This
 **c)** For the input file `ip.txt`, display all lines containing no more than 2 fields.
 
 ```bash
-##### add your solution here
+$ ruby -ane 'print if $F.size < 3' ip.txt
 Hello World
 12345
 ```
@@ -44,14 +44,14 @@ Hello World
 **d)** For the input file `ip.txt`, display all lines containing `is` in the second field.
 
 ```bash
-##### add your solution here
+$ ruby -ane 'print if $F[1] =~ /is/' ip.txt
 Today is sunny
 ```
 
 **e)** For each line of the input file `ip.txt`, replace first occurrence of `o` with `0`.
 
 ```bash
-##### add your solution here
+$ ruby -pe 'sub(/o/, "0")' ip.txt
 Hell0 World
 H0w are you
 This game is g0od
@@ -68,14 +68,14 @@ brown bread mat hair 42
 blue cake mug shirt -7
 yellow banana window shoes 3.14
 
-##### add your solution here
+$ ruby -ane 'BEGIN{p=1}; p*=$F[-1].to_f; END{puts p}' table.txt
 -923.1600000000001
 ```
 
 **g)** Append `.` to all the input lines for the given `stdin` data.
 
 ```bash
-$ printf 'last\nappend\nstop\n' | ##### add your solution here
+$ printf 'last\nappend\nstop\n' | ruby -pe 'sub(/$/, ".")'
 last.
 append.
 stop.
@@ -86,7 +86,7 @@ stop.
 ```bash
 $ s='is'
 
-##### add your solution here
+$ s='is' ruby -ne 'print if /\w#{ENV["s"]}/' ip.txt
 This game is good
 ```
 
@@ -94,7 +94,7 @@ This game is good
 
 ```bash
 $ s='report.log ip.txt sorted.txt'
-$ echo "$s" | ##### add your solution here
+$ echo "$s" | ruby -ane 'system("cat #{$F[1]}")'
 Hello World
 How are you
 This game is good
@@ -103,7 +103,7 @@ Today is sunny
 You are funny
 
 $ s='power.txt table.txt'
-$ echo "$s" | ##### add your solution here
+$ echo "$s" | ruby -ane 'system("cat #{$F[1]}")'
 brown bread mat hair 42
 blue cake mug shirt -7
 yellow banana window shoes 3.14
@@ -116,7 +116,7 @@ yellow banana window shoes 3.14
 **a)** Remove only the third line of given input.
 
 ```bash
-$ seq 34 37 | ##### add your solution here
+$ seq 34 37 | ruby -ne 'print if $. != 3'
 34
 35
 37
@@ -125,7 +125,7 @@ $ seq 34 37 | ##### add your solution here
 **b)** Display only fourth, fifth, sixth and seventh lines for the given input.
 
 ```bash
-$ seq 65 78 | ##### add your solution here
+$ seq 65 78 | ruby -ne 'print if 4..7'
 68
 69
 70
@@ -143,7 +143,7 @@ Today is sunny
 12345
 You are funny
 
-##### add your solution here
+$ ruby -ne 'print if $. > 3 && $_.gsub!(/are|is/, "\\& not")' ip.txt
 Today is not sunny
 You are not funny
 ```
@@ -151,7 +151,7 @@ You are not funny
 **d)** For the given `stdin`, display only the first three lines. Avoid processing lines that are not relevant.
 
 ```bash
-$ seq 14 25 | ##### add your solution here
+$ seq 14 25 | ruby -pe 'exit if $. > 3'
 14
 15
 16
@@ -160,7 +160,7 @@ $ seq 14 25 | ##### add your solution here
 **e)** For the input file `ip.txt`, display all lines from start of the file till the first occurrence of `game`.
 
 ```bash
-##### add your solution here
+$ ruby -ne 'print if 1../game/' ip.txt
 Hello World
 How are you
 This game is good
@@ -169,14 +169,14 @@ This game is good
 **f)** For the input file `ip.txt`, display all lines that contain `is` but not `good`.
 
 ```bash
-##### add your solution here
+$ ruby -ne 'print if /is/ && !/good/' ip.txt
 Today is sunny
 ```
 
 **g)** For the input file `ip.txt`, extract the word before the whole word `is` as well as the word after it. If such a match is found, display the two words around `is` in reversed order. For example, `hi;1 is--234 bye` should be converted to `234:1`. Assume that whole word `is` will not be present more than once in a single line.
 
 ```bash
-##### add your solution here
+$ ruby -ne 'puts "#{$2}:#{$1}" if /(\w+)\W+is\W+(\w*)/' ip.txt
 good:game
 sunny:Today
 ```
@@ -184,9 +184,7 @@ sunny:Today
 **h)** For the given input string, replace `0xA0` with `0x7F` and `0xC0` with `0x1F`.
 
 ```bash
-$ s='start address: 0xA0, func1 address: 0xC0'
-
-$ echo "$s" | ##### add your solution here
+$ echo 'start address: 0xA0, func1 address: 0xC0' | ruby -pe 'gsub(/0xA0/, "0x7F");gsub(/0xC0/, "0x1F")'
 start address: 0x7F, func1 address: 0x1F
 ```
 
@@ -196,11 +194,13 @@ start address: 0x7F, func1 address: 0x1F
 $ cat text.txt
 can ran want plant
 tin fin fit mine line
-##### add your solution here
+
+$ ruby -i.orig -pe 'gsub(/in/, "an")' text.txt
 
 $ cat text.txt
 can ran want plant
 tan fan fit mane lane
+
 $ cat text.txt.orig
 can ran want plant
 tin fin fit mine line
@@ -212,11 +212,13 @@ tin fin fit mine line
 $ cat text.txt
 can ran want plant
 tan fan fit mane lane
-##### add your solution here
+
+$ ruby -i -pe 'gsub(/an/, "in")' text.txt
 
 $ cat text.txt
 cin rin wint plint
 tin fin fit mine line
+
 $ diff text.txt text.txt.orig
 1c1
 < cin rin wint plint
@@ -233,7 +235,7 @@ and then you want to test
 this is good bye then
 you were there to see?
 
-##### add your solution here
+$ ruby -ne 'puts $_.index(/is|the|was|to/)' idx.txt
 12
 4
 2
@@ -243,7 +245,7 @@ you were there to see?
 **l)** Display all lines containing `[4]*` for the given `stdin` data.
 
 ```bash
-$ printf '2.3/[4]*6\n2[4]5\n5.3-[4]*9\n' | ##### add your solution here
+$ printf '2.3/[4]*6\n2[4]5\n5.3-[4]*9\n' | ruby -ne 'print if $_.include?("[4]*")'
 2.3/[4]*6
 5.3-[4]*9
 ```
@@ -251,16 +253,14 @@ $ printf '2.3/[4]*6\n2[4]5\n5.3-[4]*9\n' | ##### add your solution here
 **m)** For the given input string, replace all lowercase alphabets to `x` only for words starting with `m`.
 
 ```bash
-$ s='ma2T3a a2p kite e2e3m meet'
-
-$ echo "$s" | ##### add your solution here
+$ echo 'ma2T3a a2p kite e2e3m meet' | ruby -pe 'gsub(/\bm\w*/) {$&.tr("a-z", "x")}'
 xx2T3x a2p kite e2e3m xxxx
 ```
 
 **n)** For the input file `ip.txt`, delete all characters other than lowercase vowels and newline character. Perform this transformation only between a line containing `you` up to line number `4` (inclusive).
 
 ```bash
-##### add your solution here
+$ ruby -pe '$_.tr!("^aeiou\n", "") if /you/..4' ip.txt
 Hello World
 oaeou
 iaeioo
