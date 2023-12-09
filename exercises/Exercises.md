@@ -281,7 +281,12 @@ foo blah blah(ice) 123 xyz$
 (almond-pista) choco
 yo )yoyo( yo
 
-##### add your solution here
+$ ruby -ne 'puts $1 if /[()](.*)[()]/' brackets.txt
+ice
+almond-pista
+yoyo
+
+$ ruby -F'[()]' -ane 'puts $F[1]' brackets.txt
 ice
 almond-pista
 yoyo
@@ -299,7 +304,7 @@ Cy,97,98,95
 Ort,68,72,66
 Ith,100,100,100
 
-##### add your solution here
+$ ruby -F, -ane 'puts $F.values_at(0,2) * ":"' scores.csv
 Name:Physics
 Blue:46
 Lin:83
@@ -312,7 +317,7 @@ Ith:100
 **c)** For the input file `scores.csv`, display names of those who've scored above `70` in Maths.
 
 ```bash
-##### add your solution here
+$ ruby -F, -ane 'puts $F[0] if $F[1].to_i > 70' scores.csv
 Lin
 Cy
 Ith
@@ -322,30 +327,29 @@ Ith
 
 ```bash
 $ # solve using gsub
-$ echo 'hi there' | ##### add your solution here
+$ echo 'hi there' | ruby -ne 'puts gsub(/\W/, "").size'
 7
 
 $ # solve without using substitution functions
-$ echo 'u-no;co%."(do_12:as' | ##### add your solution here
+$ echo 'u-no;co%."(do_12:as' | ruby -F'\W' -ane 'puts ($F * "").size'
+12
+
+$ echo 'u-no;co%."(do_12:as' | ruby -ne 'puts $_.scan(/\w/).size'
 12
 ```
 
 **e)** Construct a solution that works for both the given sample inputs and the corresponding output shown.
 
 ```bash
-$ s1='1 "grape" and "mango" and "guava"'
-$ s2='("a 1""d""c-2""b")'
-
-$ echo "$s1" | ##### add your solution here
+$ printf '1 "grape" and "mango" and "guava"\n("a 1""d""c-2""b")' | ruby -ne 'puts $_.scan(/"[^"]+"/).sort * ","'
 "grape","guava","mango"
-$ echo "$s2" | ##### add your solution here
 "a 1","b","c-2","d"
 ```
 
 **f)** Display only the third and fifth characters from each input line.
 
 ```bash
-$ printf 'restore\ncat one\ncricket' | ##### add your solution here
+$ printf 'restore\ncat one\ncricket' | ruby -lne 'print $_[2], $_[4]'
 so
 to
 ik
@@ -360,7 +364,7 @@ $ cat fw.txt
 5.2  ye       8.2387
 4.2  kt   32  45.1
 
-##### add your solution here
+$ ruby -ne 'puts [$_[0,3], $_[5,2].sub("  ", "NA"), $_[14..]]*","' fw.txt
 1.3,rs,0.134563
 3.8,NA,6
 5.2,ye,8.2387
@@ -370,7 +374,7 @@ $ cat fw.txt
 **h)** For the input file `scores.csv`, display the header as well as any row which contains `b` or `t` (irrespective of case) in the first field.
 
 ```bash
-##### add your solution here
+$ ruby -F, -ane 'print if $.==1 || /[BbTt]/ === $F[0]' scores.csv
 Name,Maths,Physics,Chemistry
 Blue,67,46,99
 Ort,68,72,66
@@ -380,8 +384,12 @@ Ith,100,100,100
 **i)** Extract all whole words that contains `42` but not at the edge of a word. Assume a word cannot contain `42` more than once.
 
 ```bash
-$ s='hi42bye nice1423 bad42 cool_42a 42fake'
-$ echo "$s" | ##### add your solution here
+$ echo 'hi42bye nice1423 bad42 cool_42a 42fake' | ruby -ane 'puts $F.grep(/\B42\B/)'
+hi42bye
+nice1423
+cool_42a
+
+$ echo 'hi42bye nice1423 bad42 cool_42a 42fake' | ruby -ne 'puts $_.scan(/\w+42\w+/)'
 hi42bye
 nice1423
 cool_42a
@@ -390,7 +398,7 @@ cool_42a
 **j)** For the input file `scores.csv`, add another column named `GP` which is calculated out of `100` by giving `50%` weightage to `Maths` and `25%` each for `Physics` and `Chemistry`.
 
 ```bash
-##### add your solution here
+$ ruby -F, -lane 'puts ($F << ($.==1 ? "GP" : $F[1].to_f/2 + ($F[2].to_f+$F[3].to_f)/4))*","' scores.csv
 Name,Maths,Physics,Chemistry,GP
 Blue,67,46,99,69.75
 Lin,78,83,80,79.75
@@ -409,7 +417,7 @@ pink blue white yellow
 car,mat,ball,basket
 light green,brown,black,purple
 
-##### add your solution here
+$ ruby -ne 'f = $.<3? " " : ","; puts $_.split(f)[0,2] * f' mixed_fs.txt
 rose lily
 pink blue
 car,mat
@@ -419,18 +427,16 @@ light green,brown
 **l)** For the given space separated numbers, filter only numbers in the range `20` to `1000` (inclusive).
 
 ```bash
-$ echo '20 -983 5 756 634223' | ##### add your solution here
+$ echo '20 -983 5 756 634223' | ruby -ane 'puts $F.map(&:to_i).grep(20..1000) * " "'
 20 756
 ```
 
 **m)** For the given space separated words, randomize the order of characters for each word.
 
 ```bash
-$ s='this is a sample sentence'
-
-$ # sample randomized output shown here, could be different for you
-$ echo "$s" | ##### add your solution here
-shti si a salemp sneentce
+$ # Call `srand(1)` to generate the same result.
+$ echo 'this is a sample sentence' | ruby -ane 'srand 1; puts $F.map{_1.chars.shuffle*""} * " "'
+sith is a lmsepa tsencnee
 ```
 
 **n)** For the given input file `words.txt`, filter all lines containing characters in ascending and descending order.
@@ -446,12 +452,12 @@ flee
 reed
 
 $ # ascending order
-##### add your solution here
+$ ruby -lne 'print if $_ == $_.chars.sort*""' words.txt
 bot
 art
 
 $ # descending order
-##### add your solution here
+$ ruby -lne 'print if $_ == $_.chars.sort.reverse*""' words.txt
 toe
 reed
 ```
@@ -459,9 +465,7 @@ reed
 **o)** For the given space separated words, extract the three longest words.
 
 ```bash
-$ s='I bought two bananas and three mangoes'
-
-$ echo "$s" | ##### add your solution here
+$ echo 'I bought two bananas and three mangoes' | ruby -ane 'puts $F.max_by(3){_1.size}'
 mangoes
 bananas
 bought
@@ -475,7 +479,7 @@ apple,1:2:5,mango
 wry,4,look
 pencil,3:8,paper
 
-##### add your solution here
+$ ruby -F, -lane 'puts $F[1].split(":").map{ $F[1]=_1; $F*"," }' split.txt
 apple,1,mango
 apple,2,mango
 apple,5,mango
