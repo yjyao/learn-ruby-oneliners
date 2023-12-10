@@ -417,7 +417,7 @@ pink blue white yellow
 car,mat,ball,basket
 light green,brown,black,purple
 
-$ ruby -ne 'f = $.<3? " " : ","; puts $_.split(f)[0,2] * f' mixed_fs.txt
+$ ruby -ne 'f = $.<3 ? " " : ","; puts $_.split(f)[0,2] * f' mixed_fs.txt
 rose lily
 pink blue
 car,mat
@@ -499,7 +499,7 @@ $ cat jumbled.txt
 overcoats;furrowing-typeface%pewter##hobby
 wavering:concession/woof\retailer
 
-##### add your solution here
+$ ruby -ne 'puts $_.scan(/\w+/).grep(/[ai][nt]/)' jumbled.txt
 overcoats
 furrowing
 wavering
@@ -513,14 +513,14 @@ $ paste -sd, ip.txt
 Hello World,How are you,This game is good,Today is sunny,12345,You are funny
 $ # make sure there's no ',' at end of the line
 $ # and that there's a newline character at the end of the line
-##### add your solution here
+$ ruby -lpe '$\ = $<.eof ? "\n" : ","' ip.txt
 Hello World,How are you,This game is good,Today is sunny,12345,You are funny
 
 $ # if there's only one line in input, again make sure there's no trailing ','
 $ # and that there's a newline character at the end of the line
 $ printf 'foo' | paste -sd,
 foo
-$ printf 'foo' | ##### add your solution here
+$ printf 'foo' | ruby -lpe '$\ = $<.eof ? "\n" : ","'
 foo
 ```
 
@@ -544,7 +544,7 @@ Much ado about nothing
 He he he
 
 $ # note that there's no extra empty line at the end of expected output
-##### add your solution here
+$ ruby -l -00 -ne '(print $s, $_; $s="\n") if /\bdo/' sample.txt
 Just do-it
 Believe it
 
@@ -557,7 +557,7 @@ No doubt you like it too
 
 ```bash
 $ # note that there's no extra empty line at the end of expected output
-##### add your solution here
+$ ruby -00 -F'\n' -ane 'print $F*". ", ".\n\n"' sample.txt
 Hello World.
 
 Good day. How are you.
@@ -572,10 +572,8 @@ Much ado about nothing. He he he.
 **e)** For the given input, use `;;` as record separators and `:` as field separators. Display all records with second field having an integer greater than `50`.
 
 ```bash
-$ s='mango:100;;apple:25;;grapes:75'
-
 $ # note that the output has ;; at the end but not newline character
-$ printf "$s" | ##### add your solution here
+$ printf 'mango:100;;apple:25;;grapes:75' | ruby -F: -lane 'BEGIN{$/ = $\ = ";;"}; print if $F[1].to_i > 50'
 mango:100;;grapes:75;;
 ```
 
