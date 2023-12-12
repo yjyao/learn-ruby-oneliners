@@ -585,7 +585,7 @@ mango:100;;grapes:75;;
 
 ```bash
 $ # assume table.txt ip.txt are passed as file inputs
-##### add your solution here
+$ ruby -ane 'puts ">#{$<.filename}<" if $.==1; puts $F[-1]; (puts "-"*10; $<.close) if $.>=2' table.txt ip.txt
 >table.txt<
 42
 -7
@@ -600,7 +600,7 @@ you
 
 ```bash
 $ # assume sample.txt secrets.txt ip.txt table.txt are passed as file inputs
-##### add your solution here
+$ ruby -ane '(puts $<.filename; $<.close) if $F[2] =~ /at|fun/' sample.txt secrets.txt ip.txt table.txt
 secrets.txt
 ip.txt
 table.txt
@@ -609,7 +609,7 @@ table.txt
 **c)** Print the first two lines for each of the input files `ip.txt`, `sample.txt` and `table.txt`. Also, add a separator between the results as shown below (note that the separator isn't present at the end of the output). Assume input files will have at least two lines.
 
 ```bash
-##### add your solution here
+$ ruby -pe 'puts "---" if $.==1 && $s; $s=1; $<.close if $.>=2' ip.txt sample.txt table.txt
 Hello World
 How are you
 ---
@@ -627,7 +627,7 @@ blue cake mug shirt -7
 **a)** For the input file `sample.txt`, print a matching line containing `do` only if the previous line is empty and the line before that contains `you`.
 
 ```bash
-##### add your solution here
+$ ruby -ne 'print if /do/ && $p!="" && $pp =~ /you/; $pp=$p; $p=$_' sample.txt
 Just do-it
 Much ado about nothing
 ```
@@ -635,7 +635,7 @@ Much ado about nothing
 **b)** Print only the second matching line respectively for the search terms `do` and `not` for the input file `sample.txt`. Match these terms case insensitively.
 
 ```bash
-##### add your solution here
+$ ruby -ne 'print if /do/i && (d=(d||0)+1) == 2; print if /not/i && (n=(n||0)+1) == 2' sample.txt
 No doubt you like it too
 Much ado about nothing
 ```
@@ -643,7 +643,7 @@ Much ado about nothing
 **c)** For the input file `sample.txt`, print the matching lines containing `are` or `bit` as well as `n` lines around the matching lines. The value for `n` is passed to the `ruby` command as an environment value.
 
 ```bash
-$ n=1 ##### add your solution here
+$ n=1 ruby -e 'n=ENV["n"].to_i; ls=readlines; ls.each_with_index{|l,i| puts ls[[i-n,0].max..i+n] if l =~ /are|bit/}' sample.txt
 Good day
 How are you
 
@@ -652,7 +652,7 @@ Not a bit funny
 No doubt you like it too
 
 $ # note that first and last line are empty for this case
-$ n=2 ##### add your solution here
+$ n=2 ruby -e 'n=ENV["n"].to_i; ls=readlines; ls.each_with_index{|l,i| puts ls[[i-n,0].max..i+n] if l =~ /are|bit/}' sample.txt
 
 Good day
 How are you
@@ -690,7 +690,7 @@ Have a nice day
 Good bye
 
 $ # expected output
-##### add your solution here
+$ ruby -ne '(print $t; $t="") if /bottom/; $t+=$_ if $t; $t="" if /top/' broken.txt
 3.14
 1234567890
 ```
@@ -714,7 +714,7 @@ Believe it
 pink blue white yellow
 car,mat,ball,basket
 
-$ n=2 ##### add your solution here
+$ n=2 ruby -ne 'i=(i||0)+1 if /^%%% /; print if i == ENV["n"].to_i' concat.txt
 %%% broken.txt
 top %%%
 1234567890
@@ -728,15 +728,17 @@ car,mat,ball,basket
 **f)** For the input file `ruby.md`, replace all occurrences of `ruby` (irrespective of case) with `Ruby`. But, do not replace any matches between ` ```ruby ` and ` ``` ` lines (`ruby` in these markers shouldn't be replaced either).
 
 ```bash
-##### add your solution here, redirect the output to 'out.md'
-$ diff -sq out.md expected.md
-Files out.md and expected.md are identical
+$ diff -sq <(ruby -pe 'c=false if /^```$/; c=true if /^```ruby$/; gsub(/ruby/i, "Ruby") if !c' ruby.md) expected.md
+Files /dev/fd/63 and expected.md are identical
+
+$ diff -sq <(ruby -pe 'gsub(/ruby/i, "Ruby") if !(/^```ruby$/../^```$/)' ruby.md) expected.md
+Files /dev/fd/63 and expected.md are identical
 ```
 
 **g)** Print the last two lines for each of the input files `ip.txt`, `sample.txt` and `table.txt`. Also, add a separator between the results as shown below (note that the separator isn't present at the end of the output). Assume input files will have at least two lines.
 
 ```bash
-##### add your solution here
+$ ruby -ne '(print $s, $p, $_; $s="---\n") if $<.eof; $p=$_' ip.txt sample.txt table.txt
 12345
 You are funny
 ---
