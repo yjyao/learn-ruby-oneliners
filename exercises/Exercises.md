@@ -762,7 +762,7 @@ just,\joint*,concession<=nice
 
 $ # 'concession' is one of the third words from 'match_words.txt'
 $ # and second word from 'jumbled.txt'
-##### add your solution here
+$ ruby -rset -ne 'BEGIN{s=Set.new}; f=$_.scan(/\w+/); (s.add(f[2]); next) if ARGV.size==2; print if s.include?(f[1])' match_words.txt jumbled.txt sample.txt
 wavering:concession/woof\retailer
 No doubt you like it too
 ```
@@ -770,7 +770,7 @@ No doubt you like it too
 **b)** Interleave contents of `secrets.txt` with the contents of a file passed as `stdin` in the format as shown below.
 
 ```bash
-##### add your solution here, use 'table.txt' as stdin
+$ ruby -ne 'l1=$_; l2=STDIN.gets; print $s, l1, l2; $s="---\n"' <table.txt secrets.txt
 stag area row tick
 brown bread mat hair 42
 ---
@@ -792,12 +792,12 @@ is
 at
 
 $ # ip: search_terms.txt jumbled.txt mixed_fs.txt secrets.txt table.txt oops.txt
-##### add your solution here
+$ ruby -rset -lne 'BEGIN{s=Set.new; c=Hash.new("")}; (s.add($_); next) if ARGV.size==5; c[ARGV.size]+=$_; END{ puts s.keep_if{|w| c.all? {|n,txt| txt =~ /#{w}/i } }.to_a }' search_terms.txt jumbled.txt mixed_fs.txt secrets.txt table.txt oops.txt
 row
 at
 
 $ # ip: search_terms.txt ip.txt sample.txt oops.txt
-##### add your solution here
+$ ruby -rset -lne 'BEGIN{s=Set.new; c=Hash.new("")}; (s.add($_); next) if ARGV.size==3; c[ARGV.size]+=$_; END{ puts s.keep_if{|w| c.all? {|n,txt| txt =~ /#{w}/i } }.to_a }' search_terms.txt ip.txt sample.txt oops.txt
 hello
 you
 is
@@ -807,7 +807,7 @@ is
 
 ```bash
 $ # note that there shouldn't be an empty line at the end of the output
-##### add your solution here
+$ ruby -ne '(print; print gets) if /are/' ip.txt
 How are you
 This game is good
 You are funny
@@ -818,7 +818,7 @@ You are funny
 **e)** Replace third to fifth lines of input file `ip.txt` with second to fourth lines from file `para.txt`
 
 ```bash
-##### add your solution here
+$ ruby -pe 'BEGIN{f=STDIN.readlines}; $_=f[$.-2] if 3..5' ip.txt <para.txt
 Hello World
 How are you
 Start working on that
@@ -830,7 +830,7 @@ You are funny
 **f)** Insert one line from `jumbled.txt` before every two lines of `idx.txt`
 
 ```bash
-##### add your solution here
+$ ruby -pe 'l=$_; print STDIN.gets if $.%2==1; $_=l' <jumbled.txt idx.txt
 overcoats;furrowing-typeface%pewter##hobby
 match after the last newline character
 and then you want to test
@@ -855,7 +855,7 @@ but not that
 print+this
 but not that
 
-##### add your solution here
+$ ruby -0777 -ne 'ARGV.size==2 ? m=$_ : ARGV.size==1 ? r=$_ : print(gsub(/^#{Regexp.quote m}/, r))' match.txt jumbled.txt error.txt
 print+this
 but not that or this
 overcoats;furrowing-typeface%pewter##hobby
