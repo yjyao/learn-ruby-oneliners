@@ -884,7 +884,7 @@ come on!
 2 Apples
 COME ON
 
-##### add your solution here
+$ ruby -e 'puts readlines.uniq(&:downcase)' lines.txt
 Go There
 come on
 ---
@@ -908,7 +908,7 @@ floor door
 tru eblue
 haha hehe
 
-##### add your solution here
+$ ruby -e 'puts readlines.uniq{_1.split.sort}' twos.txt
 hehe haha
 door floor
 6;8 3-4
@@ -920,8 +920,9 @@ tru eblue
 **c)** For the input file `twos.txt`, display only unique lines. Assume space as field separator with two fields on each line. Compare the lines irrespective of order of the fields. For example, `hehe haha` and `haha hehe` will be considered as duplicates.
 
 ```bash
-##### add your solution here
+$ ruby -lne 'BEGIN{d=Hash.new}; d.merge!({$_.split.sort => [$_, 1]}){|_, (t,c), _| [t, c+1]}; END{d.each{|_, (l,c)| puts l if c==1}}' twos.txt
 true blue
+an egg
 hehe bebe
 tru eblue
 ```

@@ -953,10 +953,12 @@ tru eblue
 **c)** For the input file `twos.txt`, display only unique lines. Assume space as field separator with two fields on each line. Compare the lines irrespective of order of the fields. For example, `hehe haha` and `haha hehe` will be considered as duplicates.
 
 ```bash
+$ # This is WRONG because it reorders the line. See the "an egg" line.
 $ ruby -lane 'BEGIN{h=Hash.new(0)};
               h[$F[0] > $F[1] ? $_ : "#{$F[1]} #{$F[0]}"] += 1;
               END{ h.each_key{|k| puts k if h[k]==1} }' twos.txt
 true blue
+egg an
 hehe bebe
 tru eblue
 ```
