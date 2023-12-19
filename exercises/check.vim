@@ -1,7 +1,7 @@
 func! CheckAnswer()
   let result = trim(system(substitute(getline('.'), '^\s*\$\s*', '', '')))
   let expected = trim(join(getline(line('.')+1, search('^\$\|^```\|##### add your solution here', 'n')-1), "\n"))
-  if result == expected
+  if result ==# expected
     echohl Keyword
     echo 'Correct!'
   else
